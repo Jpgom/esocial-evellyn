@@ -1,0 +1,7 @@
+Flask
+pandas
+openpyxl
+lxml
+html5lib
+reportlab
+xlrd

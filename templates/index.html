@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero__content">
+                <div class="badge">Versão final</div>
+                <h1>E-SOCIAL EVELLYN</h1>
+                <p>
+                    Agora o PDF só é gerado quando <strong>todos os funcionários da empresa</strong> na planilha base
+                    estiverem com <strong>OK E-SOCIAL</strong> na coluna <strong>DEPOSITANTE</strong> e também forem encontrados no sistema.
+                </p>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <section class="panel panel--primary">
+                <div class="panel__header">
+                    <div>
+                        <h2>Processamento final</h2>
+                        <p>A planilha base usa as colunas FUNCIONÁRIO, TIPO DE EXAME e DEPOSITANTE.</p>
+                    </div>
+                    <div class="status-chip" id="fileCount">0 arquivo(s)</div>
+                </div>
+
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <div class="alert">
+                      {% for message in messages %}
+                        <div>{{ message }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+
+                <form id="uploadForm" action="{{ url_for('processar') }}" method="post" enctype="multipart/form-data">
+                    <div class="field-group">
+                        <label>Planilha base</label>
+                        <input type="file" name="base_file" id="baseFile" required>
+                        <small>Colunas esperadas: FUNCIONÁRIO, TIPO DE EXAME, DEPOSITANTE e coluna da empresa.</small>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Aba da planilha base</label>
+                        <select name="base_sheet" id="baseSheetSelect">
+                            <option value="">Carregue a planilha base primeiro</option>
+                        </select>
+                        <small>Se a planilha tiver uma aba só, ela funciona normalmente.</small>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field-card">
+                            <label>Adicionar RELFUNCGERAL por arquivo</label>
+                            <input type="file" id="relFilesPicker" multiple>
+                        </div>
+
+                        <div class="field-card">
+                            <label>Adicionar RELFUNCGERAL por pasta</label>
+                            <input type="file" id="relFolderPicker" webkitdirectory directory multiple>
+                        </div>
+                    </div>
+
+                    <div class="toolbar">
+                        <div class="toolbar__left">
+                            <button type="button" class="btn btn--light" id="clearAllBtn">Limpar lista</button>
+                        </div>
+                        <div class="toolbar__right">
+                            <span class="helper" id="selectionSummary">Nenhum arquivo selecionado.</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="file-table">
+                            <thead>
+                                <tr><th>Arquivo</th><th>Origem</th><th>Ação</th></tr>
+                            </thead>
+                            <tbody id="fileListBody">
+                                <tr class="empty-row"><td colspan="3">Nenhum RELFUNCGERAL selecionado.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <input type="file" name="rel_files" id="hiddenRelFiles" multiple hidden>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn--primary">Processar e baixar ZIP final</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <div class="loading-overlay is-hidden" id="loadingOverlay" aria-hidden="true">
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <h3>Processando arquivos</h3>
+            <p>O sistema está validando OK E-SOCIAL, gerando PDFs permitidos e montando o resumo em Excel.</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
