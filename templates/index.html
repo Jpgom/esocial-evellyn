@@ -14,8 +14,7 @@
                 <div class="badge">Versão final</div>
                 <h1>E-SOCIAL EVELLYN</h1>
                 <p>
-                    Agora o PDF só é gerado quando <strong>todos os funcionários da empresa</strong> na planilha base
-                    estiverem com <strong>OK E-SOCIAL</strong> na coluna <strong>DEPOSITANTE</strong> e também forem encontrados no sistema.
+                    Site para gerar arquivos pdfs de relação de funcionários das empresas
                 </p>
             </div>
         </header>
@@ -40,7 +39,7 @@
                   {% endif %}
                 {% endwith %}
 
-                <form id="uploadForm" action="{{ url_for('processar') }}" method="post" enctype="multipart/form-data">
+                <form id="uploadForm" action="{{ url_f'or('processar') }}" method="post" enctype="multipart/form-data">
                     <div class="field-group">
                         <label>Planilha base</label>
                         <input type="file" name="base_file" id="baseFile" required>
