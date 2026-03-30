@@ -39,7 +39,7 @@
                   {% endif %}
                 {% endwith %}
 
-                <form id="uploadForm" action="{{ url_f'or('processar') }}" method="post" enctype="multipart/form-data">
+                <form id="uploadForm" action="{{ url_for('processar') }}" method="post" enctype="multipart/form-data">
                     <div class="field-group">
                         <label>Planilha base</label>
                         <input type="file" name="base_file" id="baseFile" required>
